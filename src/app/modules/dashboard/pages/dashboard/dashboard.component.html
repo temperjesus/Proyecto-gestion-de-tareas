@@ -1,0 +1,175 @@
+<header>
+  <div style="display:flex; align-items:center; gap:14px;">
+    <div style="width:34px;height:34px;border-radius:10px;background:#135bec;display:flex;align-items:center;justify-content:center;font-weight:800;">
+      ✓
+    </div>
+    <h2>TaskHub Colombia</h2>
+
+    <nav style="margin-left:28px;">
+      <a class="active">Panel</a>
+      <a>Mis Tareas</a>
+      <a>Calendario</a>
+      <a>Reportes</a>
+    </nav>
+  </div>
+
+  <div style="display:flex; align-items:center; gap:12px;">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <span style="opacity:.8;">🔎</span>
+      <input
+        placeholder="Buscar tareas..."
+        style="height:34px;border-radius:10px;border:1px solid #263043;background:#0d1320;color:#fff;padding:0 12px;outline:none;"
+      />
+    </div>
+    <button style="height:34px;width:34px;border-radius:10px;border:1px solid #263043;background:#0d1320;color:#fff;cursor:pointer;">🔔</button>
+    <button style="height:34px;width:34px;border-radius:10px;border:1px solid #263043;background:#0d1320;color:#fff;cursor:pointer;">⚙️</button>
+    <div style="height:34px;width:34px;border-radius:999px;background:#263043;"></div>
+  </div>
+</header>
+
+<div class="dashboard-container">
+
+  <!-- WELCOME -->
+  <section class="welcome">
+    <h1>¡Hola, {{ userName }}! 👋</h1>
+    <p>
+      Has completado el {{ weeklyProgressPct }}% de tu progreso semanal.
+      {{ evidenceDueToday }} tareas requieren evidencia hoy.
+    </p>
+
+    <div class="actions">
+      <button class="secondary">Ver Resumen Semanal</button>
+      <button class="primary">Nueva Subtarea</button>
+    </div>
+  </section>
+
+  <!-- KPIs -->
+  <section class="kpis">
+    <div class="kpi" *ngFor="let k of kpis">
+      <h3>{{ k.title }}</h3>
+      <div class="value">{{ k.value }}</div>
+      <div
+        class="delta"
+        [class.positive]="k.deltaType === 'positive'"
+        [class.negative]="k.deltaType === 'negative'"
+      >
+        {{ k.delta }}
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN GRID -->
+  <section class="main-grid">
+
+    <!-- LEFT -->
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:12px;">
+        <h2 style="font-size:22px;font-weight:800;margin:0;">Mis Tareas en Progreso</h2>
+        <a style="color:#135bec;font-weight:700;font-size:13px;cursor:pointer;text-decoration:none;">Ver todas</a>
+      </div>
+
+      <!-- TASK LIST -->
+      <div class="task-card" *ngFor="let t of tasks">
+
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:start;">
+          <div>
+            <div
+              class="meta"
+              style="text-transform:uppercase;font-weight:800;color:#60a5fa;"
+            >
+              {{ t.tag }}
+            </div>
+
+            <h4 style="margin:6px 0 0;">{{ t.title }}</h4>
+            <div class="meta" style="margin-top:4px;">{{ t.dueText }}</div>
+          </div>
+
+          <div
+            style="font-weight:800;"
+            [style.color]="t.progressPct >= 100 ? '#22c55e' : '#fb923c'"
+          >
+            {{ t.progressPct }}%
+          </div>
+        </div>
+
+        <div class="progress">
+          <div class="meta" style="margin-bottom:6px;">Progreso</div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="t.progressPct"></div>
+          </div>
+        </div>
+
+        <div
+          *ngIf="t.statusNote"
+          style="margin-top:14px;font-weight:700;font-size:13px;"
+          [style.color]="t.statusType === 'success' ? '#22c55e' : '#9da6b9'"
+        >
+          ✓ {{ t.statusNote }}
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:14px;">
+          <button
+            class="secondary"
+            style="height:38px;"
+            *ngIf="t.subtasksLabel && t.subtasksLabel !== '—'"
+          >
+            {{ t.subtasksLabel }}
+          </button>
+
+          <button
+            class="primary"
+            style="height:38px;"
+            *ngIf="t.progressPct < 100"
+          >
+            Cargar Evidencia
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="side-panel">
+
+      <div class="panel">
+        <h3>Alertas WhatsApp</h3>
+
+        <div class="alert" *ngFor="let a of alerts">
+          <strong>{{ a.title }}</strong><br />
+          <span style="color:#9da6b9;">{{ a.body }}</span>
+        </div>
+
+        <button class="secondary" style="width:100%;height:40px;margin-top:8px;">
+          Ver historial completo
+        </button>
+      </div>
+
+      <div class="panel">
+        <h3>Próximos Vencimientos</h3>
+
+        <div class="alert" style="border:1px solid rgba(239,68,68,.25); background: rgba(239,68,68,.10);">
+          <strong>Reporte Trimestral</strong><br />
+          <span style="color:#fecaca;">Hoy, 5:00 PM</span>
+        </div>
+
+        <div class="alert">
+          <strong>Capacitación Staff</strong><br />
+          <span style="color:#9da6b9;">Mañana, 9:00 AM</span>
+        </div>
+
+        <div class="alert">
+          <strong>Copia de Seguridad</strong><br />
+          <span style="color:#9da6b9;">22 Oct, 11:59 PM</span>
+        </div>
+      </div>
+
+      <div class="tip">
+        <strong>Tip de Productividad</strong>
+        <div style="margin-top:8px;color:#9da6b9;">
+          Sube tu evidencia apenas termines una subtarea. Esto permite que tu jefe revise el progreso en tiempo real.
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>

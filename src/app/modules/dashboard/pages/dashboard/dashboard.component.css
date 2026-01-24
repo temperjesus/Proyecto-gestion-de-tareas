@@ -1,0 +1,212 @@
+/* =========================
+   DASHBOARD – TaskHub Colombia
+   ========================= */
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #0f1420;
+  color: #ffffff;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ---------- HEADER ---------- */
+header {
+  background-color: #111318;
+  border-bottom: 1px solid #1f2937;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h2 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+nav a {
+  margin-right: 24px;
+  font-size: 14px;
+  color: #9da6b9;
+  text-decoration: none;
+}
+
+nav a.active {
+  color: #135bec;
+  border-bottom: 2px solid #135bec;
+  padding-bottom: 4px;
+}
+
+nav a:hover {
+  color: #ffffff;
+}
+
+/* ---------- MAIN CONTAINER ---------- */
+.dashboard-container {
+  max-width: 1400px;
+  margin: auto;
+  padding: 32px;
+}
+
+/* ---------- WELCOME ---------- */
+.welcome h1 {
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.welcome p {
+  color: #9da6b9;
+  font-size: 16px;
+}
+
+/* ---------- ACTION BUTTONS ---------- */
+.actions {
+  margin-top: 16px;
+}
+
+.actions button {
+  border-radius: 8px;
+  height: 42px;
+  padding: 0 18px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  margin-right: 12px;
+}
+
+.actions .secondary {
+  background-color: #1f2937;
+  color: #ffffff;
+}
+
+.actions .primary {
+  background-color: #135bec;
+  color: #ffffff;
+}
+
+.actions button:hover {
+  opacity: 0.9;
+}
+
+/* ---------- KPI CARDS ---------- */
+.kpis {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.kpi {
+  background-color: #111318;
+  border: 1px solid #1f2937;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.kpi h3 {
+  font-size: 14px;
+  color: #9da6b9;
+}
+
+.kpi .value {
+  font-size: 32px;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.kpi .delta {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.kpi .positive {
+  color: #22c55e;
+}
+
+.kpi .negative {
+  color: #f97316;
+}
+
+/* ---------- MAIN GRID ---------- */
+.main-grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+/* ---------- TASK CARDS ---------- */
+.task-card {
+  background-color: #111318;
+  border: 1px solid #1f2937;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.task-card h4 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.task-card .meta {
+  font-size: 13px;
+  color: #9da6b9;
+}
+
+.progress {
+  margin-top: 12px;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: #1f2937;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #135bec;
+}
+
+/* ---------- RIGHT PANEL ---------- */
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.panel {
+  background-color: #111318;
+  border: 1px solid #1f2937;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.panel h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.alert {
+  background-color: #1f2937;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+/* ---------- TIP ---------- */
+.tip {
+  background-color: rgba(19, 91, 236, 0.15);
+  border: 1px solid rgba(19, 91, 236, 0.4);
+  border-radius: 14px;
+  padding: 18px;
+  color: #c7d2fe;
+}
