@@ -4,7 +4,7 @@
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-/* ===== Page background overlay (works even without global styles) ===== */
+/* page bg */
 .kb-page{
   min-height: 100vh;
   background:
@@ -13,24 +13,24 @@
     #0f1420;
 }
 
-/* ===== Container ===== */
+/* container */
 .kb-container{
   max-width: 1440px;
   margin: 0 auto;
   padding: 34px 40px 44px;
 }
 
-/* ===== Header ===== */
+/* header */
 .kb-head{
   display:flex;
   justify-content:space-between;
   align-items:flex-end;
-  gap: 16px;
+  gap:16px;
   margin-bottom: 18px;
 }
 
 .kb-title{
-  margin: 0;
+  margin:0;
   font-size: 34px;
   font-weight: 900;
   letter-spacing: -0.02em;
@@ -65,10 +65,7 @@
   margin-left: -8px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.35);
 }
-
-.kb-avatar:first-child{
-  margin-left: 0;
-}
+.kb-avatar:first-child{ margin-left: 0; }
 
 .kb-more{
   display:flex;
@@ -81,24 +78,31 @@
   border-color: rgba(19,91,236,0.30);
 }
 
-/* primary button */
+/* primary button (as <a>) */
 .btn-primary{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
   background: #135bec;
   border: 1px solid rgba(255,255,255,0.10);
-  color: #fff;
+  color:#fff;
   font-weight: 900;
   height: 42px;
   padding: 0 14px;
   border-radius: 12px;
-  cursor: pointer;
+  cursor:pointer;
   box-shadow: 0 10px 30px rgba(19,91,236,0.18);
   transition: transform .12s ease, opacity .12s ease;
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
 }
 
-.btn-primary:hover{ opacity: .95; transform: translateY(-1px); }
+.btn-primary:hover{ opacity:.95; transform: translateY(-1px); }
 .btn-primary:active{ transform: translateY(0px); }
 
-/* ===== Filters ===== */
+/* filters */
 .kb-filters{
   background: rgba(17,19,24,0.70);
   border: 1px solid rgba(255,255,255,0.06);
@@ -129,7 +133,7 @@
   transform: translateY(-1px);
 }
 
-/* ===== Grid / Columns ===== */
+/* grid */
 .kb-grid{
   display:grid;
   grid-template-columns: repeat(4, 1fr);
@@ -145,7 +149,7 @@
   .kb-grid{ grid-template-columns: 1fr; }
 }
 
-/* column shell */
+/* column */
 .kb-col{
   background: rgba(17,19,24,0.55);
   border: 1px solid rgba(255,255,255,0.06);
@@ -156,7 +160,6 @@
   box-shadow: 0 10px 40px rgba(0,0,0,0.35);
 }
 
-/* column head */
 .kb-col-head{
   display:flex;
   justify-content:space-between;
@@ -202,19 +205,15 @@
   padding: 4px 8px;
   border-radius: 10px;
 }
+.kb-morebtn:hover{ background: rgba(255,255,255,0.04); }
 
-.kb-morebtn:hover{
-  background: rgba(255,255,255,0.04);
-}
-
-/* ===== Card list ===== */
+/* list/cards */
 .kb-list{
   display:flex;
   flex-direction:column;
   gap: 12px;
 }
 
-/* ===== Cards ===== */
 .kb-card{
   background: rgba(13,19,32,0.92);
   border: 1px solid rgba(255,255,255,0.08);
@@ -222,6 +221,7 @@
   padding: 14px;
   box-shadow: 0 8px 30px rgba(0,0,0,0.35);
   transition: transform .15s ease, border-color .15s ease;
+  cursor: pointer;
 }
 
 .kb-card:hover{
@@ -268,7 +268,7 @@
   height: 8px;
   background: rgba(255,255,255,0.08);
   border-radius: 999px;
-  overflow: hidden;
+  overflow:hidden;
 }
 
 .fill{

@@ -1,6 +1,7 @@
 <div class="kb-page">
   <div class="kb-container">
 
+    <!-- Header -->
     <div class="kb-head">
       <div class="kb-head-left">
         <h1 class="kb-title">{{ title }}</h1>
@@ -8,17 +9,21 @@
       </div>
 
       <div class="kb-actions">
-        <div class="kb-avatars">
+        <div class="kb-avatars" aria-label="Team members">
           <div class="kb-avatar"></div>
           <div class="kb-avatar"></div>
           <div class="kb-avatar"></div>
           <div class="kb-avatar kb-more">+5</div>
         </div>
 
-        <button class="btn-primary" type="button">+ New Task</button>
+        <!-- ✅ New Task FUNCIONA con routerLink (sin TS) -->
+        <a class="btn-primary" routerLink="/tasks/create">
+          + New Task
+        </a>
       </div>
     </div>
 
+    <!-- Filters -->
     <div class="kb-filters">
       <button class="kb-filter" type="button">{{ filters.members }}</button>
       <button class="kb-filter" type="button">{{ filters.team }}</button>
@@ -26,6 +31,7 @@
       <button class="kb-filter" type="button">{{ filters.deadline }}</button>
     </div>
 
+    <!-- Columns -->
     <div class="kb-grid">
       <section class="kb-col" *ngFor="let col of columns">
         <div class="kb-col-head">
@@ -35,7 +41,7 @@
             <div class="kb-badge">{{ col.badge }}</div>
           </div>
 
-          <button class="kb-morebtn" type="button">⋯</button>
+          <button class="kb-morebtn" type="button" aria-label="Column menu">⋯</button>
         </div>
 
         <div class="kb-list">

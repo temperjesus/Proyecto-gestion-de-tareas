@@ -1,1 +1,191 @@
-<p>task-create works!</p>
+<div class="tc-page">
+  <div class="tc-container">
+
+    <!-- Header -->
+    <div class="tc-head">
+      <div>
+        <h1 class="tc-title">{{ pageTitle }}</h1>
+        <p class="tc-sub">{{ pageSub }}</p>
+      </div>
+
+      <div class="tc-actions">
+        <button class="btn ghost" type="button">Cancel</button>
+        <button class="btn primary" type="button" (click)="submit()">Create Task</button>
+      </div>
+    </div>
+
+    <div class="tc-grid">
+      <!-- LEFT: main form -->
+      <div class="left">
+
+        <!-- Task info -->
+        <section class="card">
+          <div class="card-head">
+            <div class="card-title">Global Task Information</div>
+          </div>
+
+          <div class="form">
+            <div class="row">
+              <div class="field">
+                <label>Project</label>
+                <select [(ngModel)]="task.project" name="project">
+                  <option *ngFor="let p of projects" [value]="p">{{ p }}</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Priority</label>
+                <select [(ngModel)]="task.priority" name="priority">
+                  <option value="LOW">LOW</option>
+                  <option value="MEDIUM">MEDIUM</option>
+                  <option value="HIGH">HIGH</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Task title</label>
+              <input [(ngModel)]="task.title" name="title" placeholder="Ej: Website UI Design Phase 2" />
+            </div>
+
+            <div class="field">
+              <label>Description</label>
+              <textarea [(ngModel)]="task.description" name="description" rows="4"
+                        placeholder="Describe la tarea y criterios de entrega..."></textarea>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label>Chief reviewer</label>
+                <select [(ngModel)]="task.chiefReviewer" name="chiefReviewer">
+                  <option *ngFor="let c of chiefs" [value]="c">{{ c }}</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Start date</label>
+                <input type="date" [(ngModel)]="task.startDate" name="startDate" />
+              </div>
+
+              <div class="field">
+                <label>Deadline</label>
+                <input type="date" [(ngModel)]="task.deadline" name="deadline" />
+              </div>
+            </div>
+
+            <div class="toggle">
+              <input type="checkbox" [(ngModel)]="task.whatsappNotify" name="whatsappNotify" />
+              <div>
+                <div class="toggle-title">WhatsApp notifications</div>
+                <div class="toggle-sub">Notificar automáticamente asignaciones, cambios de estado y vencimientos.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Subtasks builder -->
+        <section class="card">
+          <div class="card-head row-between">
+            <div class="card-title">Create Subtasks</div>
+            <button class="link" type="button" (click)="addSubtask()">+ Add subtask</button>
+          </div>
+
+          <div class="subwrap">
+            <div class="sub" *ngFor="let s of subtasks; let i = index">
+              <div class="sub-head">
+                <div class="sub-title">Subtask #{{ i + 1 }}</div>
+                <button class="iconbtn" type="button" (click)="removeSubtask(i)" title="Remove">✕</button>
+              </div>
+
+              <div class="row">
+                <div class="field grow">
+                  <label>Title</label>
+                  <input [(ngModel)]="s.title" [name]="'subTitle'+i" placeholder="Ej: Crear mockup de pantalla" />
+                </div>
+
+                <div class="field">
+                  <label>Status</label>
+                  <select [(ngModel)]="s.status" [name]="'subStatus'+i">
+                    <option value="IN_PROGRESS">IN_PROGRESS</option>
+                    <option value="IN_REVIEW">IN_REVIEW</option>
+                    <option value="COMPLETED">COMPLETED</option>
+                    <option value="CANCELLED">CANCELLED</option>
+                    <option value="OVERDUE">OVERDUE</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="field">
+                  <label>Assigned to</label>
+                  <select [(ngModel)]="s.assignedTo" [name]="'subAssignee'+i">
+                    <option *ngFor="let m of members" [value]="m">{{ m }}</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label>Deadline</label>
+                  <input type="date" [(ngModel)]="s.deadline" [name]="'subDeadline'+i" />
+                </div>
+
+                <div class="field mini-toggle">
+                  <label>WhatsApp</label>
+                  <div class="mini">
+                    <input type="checkbox" [(ngModel)]="s.whatsappNotify" [name]="'subWA'+i" />
+                    <span>{{ s.whatsappNotify ? 'ON' : 'OFF' }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- RIGHT: summary -->
+      <div class="right">
+        <section class="card">
+          <div class="card-head">
+            <div class="card-title">Summary</div>
+          </div>
+
+          <div class="summary">
+            <div class="sum-row">
+              <span>Total subtasks</span>
+              <strong>{{ subtasks.length }}</strong>
+            </div>
+            <div class="sum-row">
+              <span>Completed</span>
+              <strong>{{ completedSubtasks }}</strong>
+            </div>
+            <div class="sum-row">
+              <span>Progress</span>
+              <strong>{{ progressPct }}%</strong>
+            </div>
+
+            <div class="bar">
+              <div class="fill" [style.width.%]="progressPct"></div>
+            </div>
+
+            <div class="note">
+              Recomendación: define subtareas pequeñas para que el progreso sea real y verificable con evidencias.
+            </div>
+
+            <button class="btn primary full" type="button" (click)="submit()">
+              Create Task
+            </button>
+          </div>
+        </section>
+
+        <section class="tip">
+          <div class="tip-title">Tip</div>
+          <div class="tip-body">
+            Si activas WhatsApp, el sistema generará un log por cada asignación y recordatorio.
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </div>
+</div>
+

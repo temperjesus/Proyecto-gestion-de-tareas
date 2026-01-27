@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
-type KanbanStatus = 'COMPLETED' | 'IN_REVIEW' | 'CANCELLED' | 'OVERDUE';
+// ✅ IMPORT CORRECTO EN TU ESTRUCTURA (4 ../)
+import { TaskStoreService, StoredTask, Status } from '../../../../core/services/task-store.service';
 
 type KanbanTask = {
   id: number;
@@ -18,19 +19,19 @@ type KanbanColumn = {
   title: string;
   badge: number;
   accent: 'green' | 'yellow' | 'gray' | 'red';
-  status: KanbanStatus;
+  status: Status;
   tasks: KanbanTask[];
 };
 
 @Component({
   selector: 'app-kanban-board',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './kanban-board.component.html',
   styleUrls: ['./kanban-board.component.css'],
 })
 export class KanbanBoardComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private store: TaskStoreService) {}
 
   title = 'Project Kanban Board';
   subtitle = 'Gestión de proyectos y tareas operativas para PYMES';
@@ -42,45 +43,53 @@ export class KanbanBoardComponent {
     deadline: 'Deadline: This Week',
   };
 
-  columns: KanbanColumn[] = [
-    {
-      title: 'COMPLETADA',
-      badge: 3,
-      accent: 'green',
-      status: 'COMPLETED',
-      tasks: [
-        { id: 1, title: 'Optimización SEO Landing Page', dateText: 'Oct 12, 2023', progressPct: 100, subtasksLabel: '8/8 Subtasks' },
-      ],
-    },
-    {
-      title: 'POR REVISIÓN',
-      badge: 2,
-      accent: 'yellow',
-      status: 'IN_REVIEW',
-      tasks: [
-        { id: 2, title: 'Implementación pasarela de pagos', dateText: 'Oct 24, 2023', progressPct: 85, subtasksLabel: '12/14 Subtasks', chiefOnly: true },
-        { id: 3, title: 'Ajuste de diseño móvil Dashboard', dateText: 'Oct 26, 2023', progressPct: 60, subtasksLabel: '3/5 Subtasks' },
-      ],
-    },
-    {
-      title: 'CANCELADA',
-      badge: 1,
-      accent: 'gray',
-      status: 'CANCELLED',
-      tasks: [
-        { id: 4, title: 'Integración con API Antigua', dateText: 'Sep 30, 2023', progressPct: 10, subtasksLabel: '—' },
-      ],
-    },
-    {
-      title: 'RETRASADA',
-      badge: 1,
-      accent: 'red',
-      status: 'OVERDUE',
-      tasks: [
-        { id: 5, title: 'Cierre Contable Mes Anterior', dateText: 'Venció: Oct 15', progressPct: 40, subtasksLabel: '2/5 Subtasks', overdueText: 'Venció' },
-      ],
-    },
-  ];
+  columns: KanbanColumn[] = [];
+
+  ngOnInit() {
+    this.buildColumns();
+  }
+
+  // Si vienes de Create Task y se actualizó el store, al entrar al Kanban ya lo verás.
+  private buildColumns() {
+    const all = this.store.getAll();
+
+    this.columns = [
+      this.makeColumn('COMPLETADA', 'green', 'COMPLETED', all),
+      this.makeColumn('POR REVISIÓN', 'yellow', 'IN_REVIEW', all),
+      this.makeColumn('CANCELADA', 'gray', 'CANCELLED', all),
+      this.makeColumn('RETRASADA', 'red', 'OVERDUE', all),
+    ];
+  }
+
+  private makeColumn(title: string, accent: KanbanColumn['accent'], status: Status, all: StoredTask[]): KanbanColumn {
+    const tasks = all
+      .filter(t => t.status === status)
+      .map(t => this.mapToKanban(t));
+
+    return {
+      title,
+      accent,
+      status,
+      badge: tasks.length,
+      tasks,
+    };
+  }
+
+  private mapToKanban(t: StoredTask): KanbanTask {
+    return {
+      id: t.id,
+      title: t.title,
+      dateText: t.dateText,
+      progressPct: t.progressPct,
+      subtasksLabel: t.subtasksLabel,
+      overdueText: t.status === 'OVERDUE' ? 'Venció' : undefined,
+      chiefOnly: t.status === 'IN_REVIEW',
+    };
+  }
+
+  openTask(taskId: number) {
+    this.router.navigate(['/tasks/details', taskId]);
+  }
 
   accentColor(accent: KanbanColumn['accent']) {
     switch (accent) {
@@ -89,9 +98,5 @@ export class KanbanBoardComponent {
       case 'gray': return '#94a3b8';
       case 'red': return '#ef4444';
     }
-  }
-
-  openTask(taskId: number) {
-    this.router.navigate(['/tasks/details', taskId]);
   }
 }
