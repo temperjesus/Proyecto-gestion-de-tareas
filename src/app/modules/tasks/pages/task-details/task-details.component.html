@@ -1,0 +1,193 @@
+<div class="td-page">
+  <div class="td-container">
+
+    <!-- Breadcrumbs -->
+    <div class="crumbs">
+      <ng-container *ngFor="let c of breadcrumbs; let last = last">
+        <span class="crumb" [class.crumb-last]="last">{{ c }}</span>
+        <span class="slash" *ngIf="!last">/</span>
+      </ng-container>
+    </div>
+
+    <!-- Header card -->
+    <section class="card header-card">
+      <div style="color: rgba(157,166,185,0.92); font-weight: 800; margin-bottom: 6px;">
+        Task ID: {{ taskId }}
+      </div>
+
+      <div class="header-top">
+        <div class="header-left">
+          <div class="title-row">
+            <h1 class="h1">{{ title }}</h1>
+            <div class="status-pill">
+              <span class="dot-sm"></span>
+              <span>{{ statusLabel }}</span>
+            </div>
+          </div>
+
+          <div class="meta-row">
+            <span class="meta-item">📅 {{ dateText }}</span>
+            <span class="meta-item">❗ {{ priorityText }}</span>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button class="btn ghost">WhatsApp Log</button>
+          <button class="btn primary">Approve Task (Chief Only)</button>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-head">
+          <div class="progress-title">Total Task Progress</div>
+          <div class="progress-pct">{{ progressPct }}%</div>
+        </div>
+
+        <div class="bar">
+          <div class="fill" [style.width.%]="progressPct"></div>
+        </div>
+
+        <div class="progress-meta">{{ progressMeta }}</div>
+      </div>
+    </section>
+
+    <div class="grid">
+
+      <!-- Left column -->
+      <div class="left">
+
+        <!-- General Info -->
+        <section class="card">
+          <div class="card-head">
+            <div class="card-title">General Info</div>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="label">PROJECT</div>
+              <div class="value">{{ info.project }}</div>
+            </div>
+            <div class="info-item">
+              <div class="label">CHIEF REVIEWER</div>
+              <div class="value">{{ info.chiefReviewer }}</div>
+            </div>
+            <div class="info-item">
+              <div class="label">REGION</div>
+              <div class="value">{{ info.region }}</div>
+            </div>
+            <div class="info-item">
+              <div class="label">TIME LOGGED</div>
+              <div class="value">{{ info.timeLogged }}</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Subtasks -->
+        <section class="card">
+          <div class="card-head row-between">
+            <div class="card-title">Subtasks</div>
+            <button class="link">+ Add Subtask</button>
+          </div>
+
+          <div class="table">
+            <div class="tr th">
+              <div>SUBTASK NAME</div>
+              <div>STATUS</div>
+              <div>RESPONSIBLE</div>
+              <div class="right">WHATSAPP</div>
+            </div>
+
+            <div class="tr" *ngFor="let s of subtasks">
+              <div class="name">{{ s.name }}</div>
+              <div><span [class]="statusPillClass(s.status)">{{ statusText(s.status) }}</span></div>
+              <div class="resp">
+                <div class="avatar"></div>
+                <div>{{ s.responsible }}</div>
+              </div>
+              <div class="right">
+                <span class="wa-ok" *ngIf="s.whatsapp==='sent'">✓</span>
+                <span class="wa-pend" *ngIf="s.whatsapp==='pending'">…</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Activity -->
+        <section class="card">
+          <div class="card-head">
+            <div class="card-title">Activity History</div>
+          </div>
+
+          <div class="timeline">
+            <div class="event" *ngFor="let a of activity">
+              <div class="bullet"></div>
+              <div class="event-body">
+                <div class="event-msg">{{ a.message }}</div>
+                <div class="event-time">{{ a.time }}</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Right column -->
+      <div class="right">
+
+        <section class="card">
+          <div class="card-head row-between">
+            <div class="card-title">Evidence Feed</div>
+            <button class="iconbtn" title="Upload">⤴</button>
+          </div>
+
+          <div class="feed">
+            <ng-container *ngFor="let e of evidence">
+
+              <div class="feed-item" *ngIf="e.type==='comment'">
+                <div class="feed-top">
+                  <div class="avatar"></div>
+                  <div class="who">
+                    <div class="who-name">{{ e.user }}</div>
+                    <div class="who-time">{{ e.time }}</div>
+                  </div>
+                </div>
+
+                <div class="bubble">{{ e.message }}</div>
+
+                <div class="thumbs" *ngIf="e.thumbs?.length">
+                  <div class="thumb" *ngFor="let _ of e.thumbs"></div>
+                </div>
+              </div>
+
+              <div class="feed-item" *ngIf="e.type==='file'">
+                <div class="feed-top">
+                  <div class="avatar"></div>
+                  <div class="who">
+                    <div class="who-name">{{ e.user }}</div>
+                    <div class="who-time">{{ e.time }}</div>
+                  </div>
+                </div>
+
+                <div class="file">
+                  <div class="file-icon" [class.pdf]="e.fileType==='PDF'">PDF</div>
+                  <div class="file-body">
+                    <div class="file-name">{{ e.fileName }}</div>
+                    <div class="file-meta">{{ e.sizeText }}</div>
+                  </div>
+                  <button class="iconbtn">⬇</button>
+                </div>
+              </div>
+
+            </ng-container>
+          </div>
+
+          <div class="composer">
+            <input placeholder="Write a comment or upload evidence..." />
+            <button class="send">➤</button>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</div>

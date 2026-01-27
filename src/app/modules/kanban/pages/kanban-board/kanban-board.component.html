@@ -1,67 +1,81 @@
-<div class="kb-container">
-  <div class="kb-head">
-    <div>
-      <h1 class="kb-title">{{ title }}</h1>
-      <p class="kb-sub">{{ subtitle }}</p>
-    </div>
+<div class="kb-page">
+  <div class="kb-container">
 
-    <div class="kb-actions">
-      <div class="kb-avatars">
-        <div class="kb-avatar"></div>
-        <div class="kb-avatar"></div>
-        <div class="kb-avatar"></div>
-        <div class="kb-avatar kb-more">+5</div>
+    <div class="kb-head">
+      <div class="kb-head-left">
+        <h1 class="kb-title">{{ title }}</h1>
+        <p class="kb-sub">{{ subtitle }}</p>
       </div>
-      <button class="btn-primary">+ New Task</button>
-    </div>
-  </div>
 
-  <div class="kb-filters">
-    <div class="kb-filter">{{ filters.members }}</div>
-    <div class="kb-filter">{{ filters.team }}</div>
-    <div class="kb-filter">{{ filters.lead }}</div>
-    <div class="kb-filter">{{ filters.deadline }}</div>
-  </div>
-
-  <div class="kb-grid">
-    <section class="kb-col" *ngFor="let col of columns">
-      <div class="kb-col-head">
-        <div class="kb-col-left">
-          <span class="dot" [style.background]="accentColor(col.accent)"></span>
-          <div class="kb-col-title">{{ col.title }}</div>
-          <div class="kb-badge">{{ col.badge }}</div>
+      <div class="kb-actions">
+        <div class="kb-avatars">
+          <div class="kb-avatar"></div>
+          <div class="kb-avatar"></div>
+          <div class="kb-avatar"></div>
+          <div class="kb-avatar kb-more">+5</div>
         </div>
-        <button class="kb-morebtn">⋯</button>
+
+        <button class="btn-primary" type="button">+ New Task</button>
       </div>
+    </div>
 
-      <div class="kb-list">
-        <article class="kb-card" *ngFor="let t of col.tasks">
-          <div class="kb-card-title">{{ t.title }}</div>
+    <div class="kb-filters">
+      <button class="kb-filter" type="button">{{ filters.members }}</button>
+      <button class="kb-filter" type="button">{{ filters.team }}</button>
+      <button class="kb-filter" type="button">{{ filters.lead }}</button>
+      <button class="kb-filter" type="button">{{ filters.deadline }}</button>
+    </div>
 
-          <div class="kb-card-meta">
-            <span>{{ t.dateText }}</span>
-            <span class="overdue" *ngIf="t.overdueText">{{ t.overdueText }}</span>
+    <div class="kb-grid">
+      <section class="kb-col" *ngFor="let col of columns">
+        <div class="kb-col-head">
+          <div class="kb-col-left">
+            <span class="dot" [style.background]="accentColor(col.accent)"></span>
+            <div class="kb-col-title">{{ col.title }}</div>
+            <div class="kb-badge">{{ col.badge }}</div>
           </div>
 
-          <div class="kb-progress">
-            <div class="kb-progress-label">
-              <span>PROGRESS</span>
-              <span>{{ t.progressPct }}%</span>
-            </div>
-            <div class="bar">
-              <div class="fill" [style.width.%]="t.progressPct"></div>
-            </div>
-            <div class="kb-progress-foot">
-              <span>{{ t.subtasksLabel }}</span>
-            </div>
-          </div>
+          <button class="kb-morebtn" type="button">⋯</button>
+        </div>
 
-          <div class="kb-tags" *ngIf="t.chiefOnly">
-            <span class="tag">Chief Only</span>
-          </div>
-        </article>
-      </div>
-    </section>
+        <div class="kb-list">
+          <article
+            class="kb-card"
+            *ngFor="let t of col.tasks"
+            (click)="openTask(t.id)"
+            role="button"
+            tabindex="0"
+            title="Ver detalle"
+          >
+            <div class="kb-card-title">{{ t.title }}</div>
+
+            <div class="kb-card-meta">
+              <span>{{ t.dateText }}</span>
+              <span class="overdue" *ngIf="t.overdueText">{{ t.overdueText }}</span>
+            </div>
+
+            <div class="kb-progress">
+              <div class="kb-progress-label">
+                <span>PROGRESS</span>
+                <span>{{ t.progressPct }}%</span>
+              </div>
+
+              <div class="bar">
+                <div class="fill" [style.width.%]="t.progressPct"></div>
+              </div>
+
+              <div class="kb-progress-foot">
+                <span>{{ t.subtasksLabel }}</span>
+              </div>
+            </div>
+
+            <div class="kb-tags">
+              <span class="tag" *ngIf="t.chiefOnly">Chief Only</span>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+
   </div>
 </div>
-

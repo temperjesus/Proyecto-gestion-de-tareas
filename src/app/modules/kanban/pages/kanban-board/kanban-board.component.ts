@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 type KanbanStatus = 'COMPLETED' | 'IN_REVIEW' | 'CANCELLED' | 'OVERDUE';
 
@@ -29,6 +30,8 @@ type KanbanColumn = {
   styleUrls: ['./kanban-board.component.css'],
 })
 export class KanbanBoardComponent {
+  constructor(private router: Router) {}
+
   title = 'Project Kanban Board';
   subtitle = 'Gestión de proyectos y tareas operativas para PYMES';
 
@@ -86,5 +89,9 @@ export class KanbanBoardComponent {
       case 'gray': return '#94a3b8';
       case 'red': return '#ef4444';
     }
+  }
+
+  openTask(taskId: number) {
+    this.router.navigate(['/tasks/details', taskId]);
   }
 }
